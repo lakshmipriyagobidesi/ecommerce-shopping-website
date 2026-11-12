@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}My orders{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">YOUR SHOPPING HISTORY</p><h1>My orders</h1></div>
+{% if orders %}<div class="orders-list">{% for order in orders %}<a class="order-card" href="{{ url_for('order_confirmation', order_id=order.id) }}"><div><span class="muted">Order #{{ order.id }}</span><h3>{{ order.created_at }}</h3><span class="status-pill">{{ order.status }}</span></div><div class="order-card-end"><strong>₹{{ '%.2f'|format(order.total) }}</strong><span>View details →</span></div></a>{% endfor %}</div>
+{% else %}<div class="empty-state"><h2>No orders yet</h2><p>Your completed demo orders will appear here.</p><a class="button" href="{{ url_for('index') }}">Browse products</a></div>{% endif %}
+{% endblock %}

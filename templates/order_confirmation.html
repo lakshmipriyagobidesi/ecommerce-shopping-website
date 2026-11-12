@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Order confirmed{% endblock %}
+{% block content %}
+<div class="confirmation-card"><div class="success-icon">✓</div><p class="eyebrow">ORDER PLACED</p><h1>Thank you for your order!</h1><p>Your demo order <strong>#{{ order.id }}</strong> has been recorded.</p><span class="status-pill">{{ order.status }}</span>
+<div class="order-detail"><div><span>Order total</span><strong>₹{{ '%.2f'|format(order.total) }}</strong></div><div><span>Deliver to</span><strong>{{ order.customer_name }}</strong></div><div><span>Address</span><strong>{{ order.address }}</strong></div></div>
+<h2>Items ordered</h2>{% for item in items %}<div class="mini-item"><span>{{ item.product_name }} × {{ item.quantity }}</span><strong>₹{{ '%.2f'|format(item.price * item.quantity) }}</strong></div>{% endfor %}
+<div class="confirmation-actions"><a class="button" href="{{ url_for('my_orders') }}">View my orders</a><a class="button button-outline" href="{{ url_for('index') }}">Continue shopping</a></div></div>
+{% endblock %}

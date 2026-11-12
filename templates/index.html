@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Shop online{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">YOUR EVERYDAY MARKETPLACE</p>
+    <h1>Find your next<br><span>favorite thing.</span></h1>
+    <p>Discover useful products, great everyday prices, and a simple checkout experience.</p>
+    <a class="button button-light" href="#products">Explore products ↓</a>
+  </div>
+  <div class="hero-art"><div class="hero-circle">🛍️</div><div class="float-card">✨ Your next great find</div></div>
+</section>
+<section id="products" class="section-heading">
+  <div><p class="eyebrow">HANDPICKED FOR YOU</p><h2>Shop our products</h2></div>
+  <span class="muted">{{ products|length }} item(s)</span>
+</section>
+<form class="filters" action="{{ url_for('index') }}" method="get">
+  <input type="search" name="q" value="{{ search }}" placeholder="Search products..." aria-label="Search products">
+  <select name="category" aria-label="Filter by category">
+    <option value="">All categories</option>
+    {% for item in categories %}
+      <option value="{{ item.category }}" {% if selected_category == item.category %}selected{% endif %}>{{ item.category }}</option>
+    {% endfor %}
+  </select>
+  <button class="button" type="submit">Search</button>
+  {% if search or selected_category %}<a class="clear-link" href="{{ url_for('index') }}">Clear</a>{% endif %}
+</form>
+<div class="product-grid">
+  {% for product in products %}
+  <article class="product-card">
+    <a class="product-image" href="{{ url_for('product_detail', product_id=product.id) }}">
+      <img src="{{ product.image }}" alt="{{ product.name }}" loading="lazy" onerror="this.src='https://placehold.co/600x450?text=Product'">
+      <span class="category-pill">{{ product.category }}</span>
+    </a>
+    <div class="product-info">
+      <a class="product-name" href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a>
+      <p>{{ product.description }}</p>
+      <div class="product-bottom"><strong>₹{{ '%.2f'|format(product.price) }}</strong><span class="stock">{{ product.stock }} in stock</span></div>
+      <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="post">
+        <button class="button button-full" type="submit" {% if product.stock <= 0 %}disabled{% endif %}>＋ Add to cart</button>
+      </form>
+    </div>
+  </article>
+  {% else %}
+  <div class="empty-state"><h3>No products found</h3><p>Try another search or category.</p><a class="button" href="{{ url_for('index') }}">Show all products</a></div>
+  {% endfor %}
+</div>
+{% endblock %}

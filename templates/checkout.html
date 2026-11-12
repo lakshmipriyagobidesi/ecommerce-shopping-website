@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">ALMOST THERE</p><h1>Checkout</h1><p class="muted">Enter delivery details to place your demo order.</p></div>
+<div class="checkout-layout">
+<form class="form-card checkout-form" method="post"><h2>Delivery details</h2>
+<label>Recipient name<input name="customer_name" required maxlength="120" value="{{ request.form.get('customer_name', session.get('user_name','')) }}"></label>
+<label>Delivery address<textarea name="address" required rows="4" maxlength="500" placeholder="House number, street, city, PIN code">{{ request.form.get('address','') }}</textarea></label>
+<div class="demo-notice"><strong>Demo payment</strong><p>This project does not charge money. Submitting confirms a simulated order.</p></div>
+<button class="button button-full" type="submit">Place demo order · ₹{{ '%.2f'|format(total) }}</button></form>
+<aside class="summary-card"><h2>Your items</h2>{% for item in items %}<div class="mini-item"><span>{{ item.product.name }} × {{ item.quantity }}</span><strong>₹{{ '%.2f'|format(item.subtotal) }}</strong></div>{% endfor %}<hr><div class="summary-row total-row"><span>Total</span><strong>₹{{ '%.2f'|format(total) }}</strong></div></aside>
+</div>
+{% endblock %}

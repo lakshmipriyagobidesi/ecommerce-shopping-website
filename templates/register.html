@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Create account{% endblock %}
+{% block content %}
+<div class="auth-wrap"><form class="form-card" method="post"><p class="eyebrow">JOIN SHOPEASE</p><h1>Create account</h1><p class="muted">Create an account to place and track orders.</p>
+<label>Full name<input name="name" required autocomplete="name" maxlength="100" value="{{ request.form.get('name','') }}"></label>
+<label>Email address<input type="email" name="email" required autocomplete="email" maxlength="254" value="{{ request.form.get('email','') }}"></label>
+<label>Password<input type="password" name="password" required minlength="8" autocomplete="new-password"><small>At least 8 characters.</small></label>
+<button class="button button-full" type="submit">Create account</button><p class="form-foot">Already registered? <a href="{{ url_for('login') }}">Log in</a></p></form></div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Your cart{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">READY WHEN YOU ARE</p><h1>Your shopping cart</h1><p class="muted">Review your items before checkout.</p></div>
+{% if items %}
+<div class="cart-layout">
+  <div class="cart-items">
+    {% for item in items %}
+    <article class="cart-item">
+      <img src="{{ item.product.image }}" alt="{{ item.product.name }}" onerror="this.src='https://placehold.co/140x140?text=Product'">
+      <div class="cart-item-main"><a class="product-name" href="{{ url_for('product_detail', product_id=item.product.id) }}">{{ item.product.name }}</a><p class="muted">₹{{ '%.2f'|format(item.product.price) }} each</p>
+        <form class="quantity-form" action="{{ url_for('update_cart', product_id=item.product.id) }}" method="post">
+          <label>Qty <input type="number" name="quantity" min="0" max="{{ item.product.stock }}" value="{{ item.quantity }}"></label><button class="text-button" type="submit">Update</button>
+        </form>
+      </div>
+      <div class="cart-item-end"><strong>₹{{ '%.2f'|format(item.subtotal) }}</strong><form action="{{ url_for('remove_from_cart', product_id=item.product.id) }}" method="post"><button class="text-button danger-text" type="submit">Remove</button></form></div>
+    </article>
+    {% endfor %}
+  </div>
+  <aside class="summary-card"><h2>Order summary</h2><div class="summary-row"><span>Subtotal</span><strong>₹{{ '%.2f'|format(total) }}</strong></div><div class="summary-row"><span>Delivery</span><strong>Free</strong></div><hr><div class="summary-row total-row"><span>Total</span><strong>₹{{ '%.2f'|format(total) }}</strong></div><a class="button button-full" href="{{ url_for('checkout') }}">Proceed to checkout →</a><a class="continue-link" href="{{ url_for('index') }}">Continue shopping</a></aside>
+</div>
+{% else %}
+<div class="empty-state"><div class="empty-icon">🛒</div><h2>Your cart is empty</h2><p>Find something you love and add it to your cart.</p><a class="button" href="{{ url_for('index') }}">Start shopping</a></div>
+{% endif %}
+{% endblock %}

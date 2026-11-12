@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}ShopEase{% endblock %} | ShopEase</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="{{ url_for('index') }}">Shop<span>Ease</span></a>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('cart') }}">Cart <span class="cart-badge">{{ cart_count }}</span></a>
+      {% if session.get('user_id') %}
+        <a href="{{ url_for('my_orders') }}">My Orders</a>
+        <span class="welcome">Hi, {{ session.get('user_name') }}</span>
+        <form class="inline-form" action="{{ url_for('logout') }}" method="post"><button class="nav-button" type="submit">Logout</button></form>
+      {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a class="nav-register" href="{{ url_for('register') }}">Create account</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+<main class="container main-content">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-list">
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+<footer><div class="container footer-inner"><span>© 2026 ShopEase</span><span>Simple shopping, made easy.</span></div></footer>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
